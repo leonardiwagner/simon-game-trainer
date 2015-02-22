@@ -32,15 +32,46 @@
         $scope.userBreadcrumb =[];
 
         var INTERVAL_TIME = 200;
+        var nextMoveCancelationToken = null;
+
+        var blinkButton = function(color, times){
+          if(times === 0) return;
+
+          var button = $(".button.button-" + color);
+
+          window.setTimeout(function(){
+            button.addClass("on");
+
+            window.setTimeout(function(){
+              button.removeClass("on");
+              blinkButton(color, times -1);
+            }, 100);
+
+          }, 500);
+
+         
+
+        };
+
+        
 
         $scope.clickGenius = function(color){
+          clearInterval(nextMoveCancelationToken);
           $scope.userBreadcrumb.push(color);
           if($scope.breadcrumb[$scope.userBreadcrumb.length -1] === color){
             if($scope.userBreadcrumb.length === $scope.breadcrumb.length){
               //congrats
               $scope.nextGenius();
             }else{
-              //waits for the next move
+              //helps if user takes too long to make next move
+              nextMoveCancelationToken = window.setInterval(function(){
+                if($scope.userBreadcrumb.length > 0){
+                  var nextColor = $scope.breadcrumb[$scope.userBreadcrumb.length];
+                  blinkButton(nextColor, 2);
+               
+                  
+                }
+              }, 3000)
             }
           }else{
             console.log('you fool');
@@ -50,8 +81,8 @@
         };
 
         $scope.nextGenius = function(){
-          var nextGenius = $scope.buttons[getRandomInt(0, $scope.buttons.length)];
-
+          var nextGenius = $scope.buttons[getRandomInt(0, $scope.buttons.length - 1)];
+          console.log(nextGenius);
           $scope.breadcrumb.push(nextGenius);
           $scope.runGenius(0);
 
