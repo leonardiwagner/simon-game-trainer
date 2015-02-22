@@ -1,0 +1,89 @@
+<html ng-app="angularApp">
+  <head>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.js"></script>
+    
+  </head>
+	<body ng-controller="MainController">
+    <article>
+      <div ng-repeat="item in breadcrumb track by $index" class="button-mini button-{{item}}"></div>
+    </article>
+    <article>
+      <div class="button button-green" ng-click="clickGenius('green')"></div>
+      <div class="button button-yellow" ng-click="clickGenius('yellow')"></div>
+      <div class="button button-red" ng-click="clickGenius('red')"></div>
+      <div class="button button-blue"ng-click="clickGenius('blue')"></div>
+      <div id="score">{{breadcrumb.length}}</div>
+    </article>
+
+    <audio id="sound-green" src="sound-green.wav" preload="auto"></audio>
+    <audio id="sound-yellow" src="sound-yellow.wav" preload="auto"></audio>
+    <audio id="sound-red" src="sound-red.wav" preload="auto"></audio>
+    <audio id="sound-blue" src="sound-blue.wav" preload="auto"></audio>
+
+    <a href ng-click="runGenius(0)">Run Genius</a>
+    <a href ng-click="nextGenius()">Next Genius</a>
+    <script>
+      var angularApp = angular.module('angularApp', []);
+      angularApp.controller('MainController', function ($scope, $http) {
+        $scope.buttons = ["green", "yellow", "red", "blue"];
+        $scope.breadcrumb =[];
+        $scope.userBreadcrumb =[];
+
+        var INTERVAL_TIME = 200;
+
+        $scope.clickGenius = function(color){
+          $scope.userBreadcrumb.push(color);
+          if($scope.breadcrumb[$scope.userBreadcrumb.length -1] === color){
+            if($scope.userBreadcrumb.length === $scope.breadcrumb.length){
+              //congrats
+              $scope.nextGenius();
+            }else{
+              //waits for the next move
+            }
+          }else{
+            console.log('you fool');
+            $scope.userBreadcrumb = [];
+          }
+
+        };
+
+        $scope.nextGenius = function(){
+          var nextGenius = $scope.buttons[getRandomInt(0, $scope.buttons.length)];
+
+          $scope.breadcrumb.push(nextGenius);
+          $scope.runGenius(0);
+
+          $scope.userBreadcrumb = [];
+        };
+
+
+        $scope.runGenius = function(i){
+          $(".button").removeClass("on");
+          $(".button.button-" + $scope.breadcrumb[i]).addClass("on");
+          var audio = new Audio('sound-' + $scope.breadcrumb[i] + '.wav').play();
+
+          window.setTimeout(function(){
+            if(i < $scope.breadcrumb.length - 1){
+              $scope.runGenius(i + 1);
+            }else{
+               $(".button").removeClass("on");
+            }
+           
+            return;
+          }, INTERVAL_TIME);
+
+        };
+
+
+
+
+        function getRandomInt(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+      });
+      
+    </script>
+  </body>
+</html>
