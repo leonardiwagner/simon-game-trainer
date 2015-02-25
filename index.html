@@ -24,7 +24,11 @@
 
     <a href ng-click="runGenius(0)">Run Genius</a>
     <a href ng-click="nextGenius()">Next Genius</a>
+    <script src="effects.js"></script>
     <script>
+      var  = new Effects();
+      effects.handleButtonEffects($(".button-red"));
+
       var angularApp = angular.module('angularApp', []);
       angularApp.controller('MainController', function ($scope, $http) {
         $scope.buttons = ["green", "yellow", "red", "blue"];
@@ -48,9 +52,6 @@
             }, 100);
 
           }, 500);
-
-         
-
         };
 
         
@@ -94,6 +95,8 @@
           $(".button").removeClass("on");
           $(".button.button-" + $scope.breadcrumb[i]).addClass("on");
           var audio = new Audio('sound-' + $scope.breadcrumb[i] + '.wav').play();
+
+          $(".button-red").pressButton();
 
           window.setTimeout(function(){
             if(i < $scope.breadcrumb.length - 1){
