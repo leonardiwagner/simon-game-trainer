@@ -1,27 +1,32 @@
-var ButtonHandler = function(){
-  var buttons = {
-    "green": {
+var ButtonsHandler = function(){
+  var buttons = [
+     {
+      "name": "green",
       "selector":".button.button-green",
       "color": [0,255,0],
       "originalColor": [0,255,0]
     },
-    "yellow": {
+     {
+      "name": "yellow",
       "selector":".button.button-yellow",
       "color": [0,255,255],
       "originalColor": [0,255,255]
     },
-    "red": {
+     {
+      "name": "red",
       "selector":".button.button-red",
       "color": [255,0,0],
       "originalColor": [255,0,0]
     },
-    "blue": {
+     {
+      "name": "blue",
       "selector":".button.button-blue",
       "color": [0,0,255],
       "originalColor": [0,0,255]
     }
-  };
+  ];
 
+/*
   var pressButton = function(color, times){
       times = typeof times!== 'undefined' ? times : 0;
       if(times === 0) return;
@@ -38,7 +43,7 @@ var ButtonHandler = function(){
 
       }, 500);
     };
-
+*/
 
   var that = this;
   var button;
@@ -50,7 +55,8 @@ var ButtonHandler = function(){
     $.fn.pressButton = pressButton;
   };
 
-  var pressButton = function(){
+  var pressButton = function(buttona){
+    button = buttona;
     turnBright(function(){
       
     });
@@ -80,7 +86,8 @@ var ButtonHandler = function(){
   };
 
   return{
-    handleButtonEffects: handleButtonEffects
+    buttons: buttons,
+    pressButton: pressButton
   };
 
 };
