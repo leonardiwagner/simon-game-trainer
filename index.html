@@ -1,118 +1,84 @@
 <html ng-app="angularApp">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="main.css" />
-    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.js"></script>
-    
+    <script src="underscore.js"></script>
   </head>
 	<body ng-controller="MainController">
-    <article>
-      <div ng-repeat="item in breadcrumb track by $index" class="button-mini button-{{item}}"></div>
-    </article>
-    <article>
-      <div class="button button-green" ng-click="clickGenius('green')"></div>
-      <div class="button button-yellow" ng-click="clickGenius('yellow')"></div>
-      <div class="button button-red" ng-click="clickGenius('red')"></div>
-      <div class="button button-blue"ng-click="clickGenius('blue')"></div>
+   
+
+    <article class="buttons-container">
+      <div ng-repeat="button in buttons" on-repeat-render="renderButtons()" class="button button-{{button.name}}" ng-click="clickGenius(button.name)"></div>
       <div id="score">{{breadcrumb.length}}</div>
     </article>
 
-    <audio id="sound-green" src="sound-green.wav" preload="auto"></audio>
-    <audio id="sound-yellow" src="sound-yellow.wav" preload="auto"></audio>
-    <audio id="sound-red" src="sound-red.wav" preload="auto"></audio>
-    <audio id="sound-blue" src="sound-blue.wav" preload="auto"></audio>
+
+   
+
+    
 
     <a href ng-click="runGenius(0)">Run Genius</a>
     <a href ng-click="nextGenius()">Next Genius</a>
+    <a href ng-click="pressButton()">Press Button</a>
+    <script src="effects.js"></script>
     <script>
-      var angularApp = angular.module('angularApp', []);
-      angularApp.controller('MainController', function ($scope, $http) {
-        $scope.buttons = ["green", "yellow", "red", "blue"];
+      angular.module('angularApp', [])
+      .directive('onRepeatRender', function(){
+        return {
+          restrict: 'A',
+          link: function(scope, element, attr){
+            if(scope.$last){
+                scope.$evalAsync(attr.onRepeatRender);
+            }
+          }
+        }
+      })
+      .controller('MainController', function ($scope, $http) {
+        var buttonsHandler = new ButtonsHandler();
+
+        $scope.renderButtons = function(){
+          buttonsHandler.renderButtons();
+        };
+
+        $scope.buttons = buttonsHandler.buttons;
         $scope.breadcrumb =[];
         $scope.userBreadcrumb =[];
 
-        var INTERVAL_TIME = 200;
-        var nextMoveCancelationToken = null;
-
-        var blinkButton = function(color, times){
-          if(times === 0) return;
-
-          var button = $(".button.button-" + color);
-
-          window.setTimeout(function(){
-            button.addClass("on");
-
-            window.setTimeout(function(){
-              button.removeClass("on");
-              blinkButton(color, times -1);
-            }, 100);
-
-          }, 500);
-
-         
-
-        };
-
-        
-
-        $scope.clickGenius = function(color){
-          clearInterval(nextMoveCancelationToken);
-          $scope.userBreadcrumb.push(color);
-          if($scope.breadcrumb[$scope.userBreadcrumb.length -1] === color){
-            if($scope.userBreadcrumb.length === $scope.breadcrumb.length){
-              //congrats
-              $scope.nextGenius();
-            }else{
-              //helps if user takes too long to make next move
-              nextMoveCancelationToken = window.setInterval(function(){
-                if($scope.userBreadcrumb.length > 0){
-                  var nextColor = $scope.breadcrumb[$scope.userBreadcrumb.length];
-                  blinkButton(nextColor, 2);
-               
-                  
-                }
-              }, 3000)
-            }
-          }else{
-            console.log('you fool');
-            $scope.userBreadcrumb = [];
-          }
-
+        $scope.clickGenius = function(buttonName){
+          buttonsHandler.pressButton(buttonsHandler.buttons[buttonName]);
         };
 
         $scope.nextGenius = function(){
-          var nextGenius = $scope.buttons[getRandomInt(0, $scope.buttons.length - 1)];
-          console.log(nextGenius);
-          $scope.breadcrumb.push(nextGenius);
+          var nextGeniusButton = buttonsHandler.getRandomButton();
+          $scope.breadcrumb.push(nextGeniusButton);
           $scope.runGenius(0);
 
           $scope.userBreadcrumb = [];
         };
 
-
         $scope.runGenius = function(i){
-          $(".button").removeClass("on");
-          $(".button.button-" + $scope.breadcrumb[i]).addClass("on");
-          var audio = new Audio('sound-' + $scope.breadcrumb[i] + '.wav').play();
+          var INTERVAL_TIME = 400;
 
           window.setTimeout(function(){
-            if(i < $scope.breadcrumb.length - 1){
+            if(i <= $scope.breadcrumb.length - 1){
               $scope.runGenius(i + 1);
-            }else{
-               $(".button").removeClass("on");
+               var button = $scope.breadcrumb[i];
+               button.soundClick.load();
+               button.soundClick.play();
+               buttonsHandler.lightButton(button);
             }
            
-            return;
+            
           }, INTERVAL_TIME);
 
         };
 
-
-
-
-        function getRandomInt(min, max) {
+         function getRandomInt(min, max) {
           return Math.floor(Math.random() * (max - min + 1)) + min;
         }
+
       });
       
     </script>
