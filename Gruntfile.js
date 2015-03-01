@@ -5,7 +5,7 @@ module.exports = function(grunt) {
           src: ['bower_components/angular/angular.min.js', 
           'bower_components/jquery/dist/jquery.min.js', 
           'bower_components/underscore/underscore-min.js',
-          'js/*'],
+          'dist/uglifieds.js'],
           dest: 'dist/main.js'
         },
         stylesheets: {
@@ -19,7 +19,15 @@ module.exports = function(grunt) {
           'dist/main.css': 'dist/main.css'
         }
       }
+    },
+    uglify:{
+      my_target:{
+        files: {
+          'dist/uglifieds.js': ['js/*']
+        }
+      }
     }
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -27,5 +35,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('default', ['concat','cssmin']);
+  grunt.registerTask('default', ['uglify','concat','cssmin']);
 };
