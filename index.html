@@ -7,18 +7,15 @@
     <script src="underscore.js"></script>
   </head>
 	<body ng-controller="MainController">
-    <article >
-      <div ng-repeat="item in breadcrumb track by $index" class="button-mini button-{{item}}"></div>
-    </article>
+   
 
     <article class="buttons-container">
-      <div ng-repeat="button in buttons" on-repeat-render="renderButtons()" class="button button-{{button.name}}" ng-click="clickGenius()"></div>
+      <div ng-repeat="button in buttons" on-repeat-render="renderButtons()" class="button button-{{button.name}}" ng-click="clickGenius(button.name)"></div>
       <div id="score">{{breadcrumb.length}}</div>
     </article>
 
 
-    <audio ng-repeat="button in buttons" id="sound-{{button.name}}" src="{{'sound-' + button.name + '.wav'}}" preload="auto"></audio>
-    <audio id="sound-click" src="button-click.wav" preload="auto"></audio>
+   
 
     
 
@@ -45,40 +42,35 @@
           buttonsHandler.renderButtons();
         };
 
-        
-
         $scope.buttons = buttonsHandler.buttons;
         $scope.breadcrumb =[];
         $scope.userBreadcrumb =[];
 
-
-        $scope.pressButton = function(){
-          buttonsHandler.pressButton($(".button-red"));
+        $scope.clickGenius = function(buttonName){
+          buttonsHandler.pressButton(buttonsHandler.buttons[buttonName]);
         };
 
         $scope.nextGenius = function(){
-          var nextGenius = $scope.buttons[getRandomInt(0, $scope.buttons.length - 1)];
-          $scope.breadcrumb.push(nextGenius.name);
+          var nextGeniusButton = buttonsHandler.getRandomButton();
+          $scope.breadcrumb.push(nextGeniusButton);
           $scope.runGenius(0);
 
           $scope.userBreadcrumb = [];
         };
 
         $scope.runGenius = function(i){
-          $(".button").removeClass("on");
-          $(".button.button-" + $scope.breadcrumb[i]).addClass("on");
-          var audio = new Audio('sound-' + $scope.breadcrumb[i] + '.wav').play();
-
-          $(".button-red").pressButton();
+          var INTERVAL_TIME = 400;
 
           window.setTimeout(function(){
-            if(i < $scope.breadcrumb.length - 1){
+            if(i <= $scope.breadcrumb.length - 1){
               $scope.runGenius(i + 1);
-            }else{
-               $(".button").removeClass("on");
+               var button = $scope.breadcrumb[i];
+               button.soundClick.load();
+               button.soundClick.play();
+               buttonsHandler.lightButton(button);
             }
            
-            return;
+            
           }, INTERVAL_TIME);
 
         };

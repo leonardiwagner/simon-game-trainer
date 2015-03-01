@@ -1,35 +1,41 @@
 var ButtonsHandler = function(){
   var SHADOW_SIZE = 9;
   var BUTTON_PRESS_SIZE = 4;
+  var BUTTON_PRESS_TIME = 100;
+  var BUTTON_LIGHT_TIME = 300;
 
   var buttons = {
     "green": {
       "name": "green",
       "borderRadiusSelector": "border-top-left-radius",
       "selector":".button.button-green",
-      "color": [0,255,0],
-      "currentColor": [0,255,0]
+      "color": [0,150,0],
+      "currentColor": [0,255,0],
+      "soundClick": new Audio('sound-green.wav')
     },
     "yellow": {
       "name": "yellow",
       "borderRadiusSelector": "border-top-right-radius",
       "selector":".button.button-yellow",
-      "color": [0,255,255],
-      "currentColor": [0,255,255]
+      "color": [200,200,0],
+      "currentColor": [0,255,255],
+      "soundClick": new Audio('sound-yellow.wav')
     },
     "red": {
       "name": "red",
       "borderRadiusSelector": "border-bottom-left-radius",
       "selector":".button.button-red",
       "color": [255,0,0],
-      "currentColor": [255,0,0]
+      "currentColor": [255,0,0],
+      "soundClick": new Audio('sound-red.wav')
     },
     "blue": {
       "name": "blue",
       "borderRadiusSelector": "border-bottom-right-radius",
       "selector":".button.button-blue",
-      "color": [0,0,255],
-      "currentColor": [0,0,255]
+      "color": [0,0,180],
+      "currentColor": [0,0,255],
+      "soundClick": new Audio('sound-blue.wav')
     }
   };
 
@@ -50,9 +56,9 @@ var ButtonsHandler = function(){
   };
 
   var lightButton = function(button){
-    var lightColor = changeColor(button.color,[100,100,100]);
+    var lightColor = changeColor(button.color,[50,50,50]);
     var buttonOriginalColor = changeColor(button.color,[0,0,0])
-    var shadowColor = changeColor(button.color, [-100, -100, -100]);
+    var shadowColor = changeColor(button.color, [-50, -50, -50]);
 
     //set light
     $(button.selector).css("background-color", lightColor);
@@ -61,15 +67,15 @@ var ButtonsHandler = function(){
     //remove light
     window.setTimeout(function(){
       $(button.selector).css("background-color", buttonOriginalColor);
-      $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + lightColor);
-    },300)
+      $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+    },BUTTON_LIGHT_TIME)
   };
 
   var pressButton = function(button){
     var buttonOriginalColor = changeColor(button.color,[0,0,0])
     var buttonOriginalPosition = $(button.selector).position();
-    var lightColor = changeColor(button.color,[100,100,100]);
-    var shadowColor = changeColor(button.color, [-100, -100, -100]);
+    var lightColor = changeColor(button.color,[150,150,150]);
+    var shadowColor = changeColor(button.color, [-150, -150, -150]);
 
     //set button press effect
     $(button.selector).css("top", (buttonOriginalPosition.top + BUTTON_PRESS_SIZE) + "px");
@@ -84,7 +90,19 @@ var ButtonsHandler = function(){
       $(button.selector).css("background-color", buttonOriginalColor);
       $(button.selector).css("top", buttonOriginalPosition.top + "px");
       $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
-    },300)
+    },BUTTON_PRESS_TIME)
+  };
+
+  var getRandomButton = function(){
+    var max = 4;
+    var min = 1;
+    var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    if(randomNumber == 1) return buttons["green"];
+    if(randomNumber == 2) return buttons["yellow"];
+    if(randomNumber == 3) return buttons["red"];
+    return buttons["blue"];
+
   };
 
   var changeColor = function(original, change){
@@ -103,8 +121,10 @@ var ButtonsHandler = function(){
 
   return{
     buttons: buttons,
+    renderButtons: renderButtons,
     pressButton: pressButton,
-    renderButtons: renderButtons
+    lightButton: lightButton,
+    getRandomButton: getRandomButton
   };
 
 };
