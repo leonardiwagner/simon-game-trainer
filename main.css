@@ -17,61 +17,33 @@ article{
 .button{
   width:50%;
   height: 100px;
-  float: left;
-  background: red;
-
-  
-
-  border: 1px solid rgb(50,0,0);
-
   position: absolute;
 }
 
 .button.button-green{
-  border-top-left-radius:15%;
-  box-shadow: 0px 9px 0px rgb(50,0,0);
-
-
+  top:0;
+  left:0;
+  z-index: 0;
 }
 
 .button.button-yellow{
-  border-top-right-radius:15%;
-  box-shadow: 0px 9px 0px rgb(50,0,0);
+  top:0;
   right:0;
+  z-index: 0;
 }
 
 .button.button-red{
-  border-bottom-left-radius:15%;
-  box-shadow: 0px 9px 0px rgb(50,0,0);
   bottom:0;
+  left:0;
+  z-index: 1;
 }
 
-.button.button-blue{
-  border-bottom-right-radius:15%;
-  box-shadow: 0px 9px 0px rgb(50,0,0);
+.button.button-blue{;
   bottom:0;
   right:0;
+  z-index: 1;
 }
 
-.button.button-green:active{
-  top:4px;
-  box-shadow: 0px 5px 0px rgb(50,0,0);
-}
-
-.button.button-yellow:active{
-  top:4px;
-  box-shadow: 0px 5px 0px rgb(50,0,0);
-}
-
-.button.button-red:active{
-  bottom:-4px;
-  box-shadow: 0px 5px 0px rgb(50,0,0);
-}
-
-.button.button-blue:active{
-  bottom:-4px;
-  box-shadow: 0px 5px 0px rgb(50,0,0);
-}
 
 .button-mini{
   width:8%;
@@ -80,41 +52,17 @@ article{
   float:left;
 }
 
-.button-green{
-  background-color: green;
-}
-.button-yellow{
-  background-color: yellow;
-}
-.button-red{
-  background-color: red;
-}
-.button-blue{
-  background-color: blue;
-}
-
-.button-green.on{
-  background-color: white;
-}
-.button-yellow.on{
-  background-color: white;
-}
-.button-red.on{
-  background-color: white;
-}
-.button-blue.on{
-  background-color: white;
-}
 
 #score{
-  background-color: black;
-  width:30%;
-  height: 50px;
-  color:white;
-  position: absolute;
-  top:38%;
-  left:33%;
-  border-radius: 30%;
-  text-align:center;
-  box-shadow: 0px -5px 0px rgb(50,50,50);
+ background-color: black;
+width: 35%;
+height: 56px;
+color: white;
+position: absolute;
+top: 38%;
+left: 32%;
+border-radius: 30%;
+text-align: center;
+box-shadow: 0px -5px 0px rgb(50,50,50);
+z-index: 2;
 }
