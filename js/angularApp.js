@@ -24,15 +24,19 @@ angular.module('angularApp', [])
     var button = buttonsHandler.buttons[buttonName];
     $scope.userBreadcrumb.push(button);
 
-    buttonsHandler.pressButton(buttonsHandler.buttons[buttonName]);
+   
+
+    if($scope.breadcrumb[$scope.userBreadcrumb.length -1].name === button.name){
+      buttonsHandler.pressButton(buttonsHandler.buttons[buttonName]);
     button.soundClick.load();
     button.soundClick.play();
 
-    if($scope.breadcrumb[$scope.userBreadcrumb.length -1].name === button.name){
+
       if($scope.userBreadcrumb.length === $scope.breadcrumb.length){
         //congrats
         $scope.nextGenius();
       }else{
+
         buttonsHandler.lightButton("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length -1),  button, function(){
           $("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length - 1)).css("background-color", "gray");  
         });
@@ -50,10 +54,11 @@ angular.module('angularApp', [])
         }, 3000);
       }
     }else{
-      var x = new Audio('sound/sound-red.wav');
+      var x = new Audio('sound/sound-error.wav');
       x.load();
       x.play();
       buttonsHandler.wrongMove();
+
       console.log('you fool');
       $scope.userBreadcrumb = [];
     }
