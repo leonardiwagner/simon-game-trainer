@@ -1,86 +1,37 @@
 <html ng-app="angularApp">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="main.css" />
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.js"></script>
-    <script src="underscore.js"></script>
+    <link rel="stylesheet" type="text/css" href="dist/main.css" />
+    
   </head>
 	<body ng-controller="MainController">
-   
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+          <div class="navbar-header">
+          <div class="btn btn-primary" ng-click="runGenius(0)">menu</div>
+          
+          <div class="btn btn-danger" style="float:right;" ng-click="reset()">reset</div>
+        </div>
+      </div>
+    </nav>
+    <article>
+      <section class="buttons-container">
+        <div ng-repeat="button in buttons" on-repeat-render="renderButtons()" class="button button-{{button.name}}" ng-click="clickGenius(button.name)"></div>
+        <div id="score">{{breadcrumb.length}}</div>
+      </section>
 
-    <article class="buttons-container">
-      <div ng-repeat="button in buttons" on-repeat-render="renderButtons()" class="button button-{{button.name}}" ng-click="clickGenius(button.name)"></div>
-      <div id="score">{{breadcrumb.length}}</div>
+      <section class="repeat-buttons">
+        <div class="btn btn-primary btn-repeat" ng-click="runGenius(0)">repeat</div>
+        <div class="btn btn-default btn-repeat-missing" ng-click="runGenius(-1)">repeat missing</div>
+      </section>
+
+      <section class="breadcrumb">
+        <!--<div ng-repeat="item in breadcrumb track by $index" class="btn btn-default button-{{item.name}}"></div>-->
+      </section>
     </article>
-
-
    
-
-    
-
-    <a href ng-click="runGenius(0)">Run Genius</a>
-    <a href ng-click="nextGenius()">Next Genius</a>
-    <a href ng-click="pressButton()">Press Button</a>
-    <script src="effects.js"></script>
-    <script>
-      angular.module('angularApp', [])
-      .directive('onRepeatRender', function(){
-        return {
-          restrict: 'A',
-          link: function(scope, element, attr){
-            if(scope.$last){
-                scope.$evalAsync(attr.onRepeatRender);
-            }
-          }
-        }
-      })
-      .controller('MainController', function ($scope, $http) {
-        var buttonsHandler = new ButtonsHandler();
-
-        $scope.renderButtons = function(){
-          buttonsHandler.renderButtons();
-        };
-
-        $scope.buttons = buttonsHandler.buttons;
-        $scope.breadcrumb =[];
-        $scope.userBreadcrumb =[];
-
-        $scope.clickGenius = function(buttonName){
-          buttonsHandler.pressButton(buttonsHandler.buttons[buttonName]);
-        };
-
-        $scope.nextGenius = function(){
-          var nextGeniusButton = buttonsHandler.getRandomButton();
-          $scope.breadcrumb.push(nextGeniusButton);
-          $scope.runGenius(0);
-
-          $scope.userBreadcrumb = [];
-        };
-
-        $scope.runGenius = function(i){
-          var INTERVAL_TIME = 400;
-
-          window.setTimeout(function(){
-            if(i <= $scope.breadcrumb.length - 1){
-              $scope.runGenius(i + 1);
-               var button = $scope.breadcrumb[i];
-               button.soundClick.load();
-               button.soundClick.play();
-               buttonsHandler.lightButton(button);
-            }
-           
-            
-          }, INTERVAL_TIME);
-
-        };
-
-         function getRandomInt(min, max) {
-          return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-
-      });
-      
-    </script>
+   <script src="dist/main.js"></script>
+   <script src="js/angularApp.js"></script>
+   <script src="js/effects.js"></script>
   </body>
 </html>

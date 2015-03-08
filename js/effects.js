@@ -11,7 +11,7 @@ var ButtonsHandler = function(){
       "selector":".button.button-green",
       "color": [0,150,0],
       "currentColor": [0,255,0],
-      "soundClick": new Audio('sound-green.wav')
+      "soundClick": new Audio('sound/sound-green.wav')
     },
     "yellow": {
       "name": "yellow",
@@ -19,7 +19,7 @@ var ButtonsHandler = function(){
       "selector":".button.button-yellow",
       "color": [200,200,0],
       "currentColor": [0,255,255],
-      "soundClick": new Audio('sound-yellow.wav')
+      "soundClick": new Audio('sound/sound-yellow.wav')
     },
     "red": {
       "name": "red",
@@ -27,7 +27,7 @@ var ButtonsHandler = function(){
       "selector":".button.button-red",
       "color": [255,0,0],
       "currentColor": [255,0,0],
-      "soundClick": new Audio('sound-red.wav')
+      "soundClick": new Audio('sound/sound-red.wav')
     },
     "blue": {
       "name": "blue",
@@ -35,44 +35,55 @@ var ButtonsHandler = function(){
       "selector":".button.button-blue",
       "color": [0,0,180],
       "currentColor": [0,0,255],
-      "soundClick": new Audio('sound-blue.wav')
+      "soundClick": new Audio('sound/sound-blue.wav')
     }
   };
 
   var renderButtons = function(){
-    var soundClick = new Audio('sound-click.wav');
+    var soundClick = new Audio('sound/sound-click.wav');
 
     _.each(buttons, function(button){
       //set color and radius
-      var buttonOriginalColor = changeColor(button.color,[0,0,0])
+      var buttonOriginalColor = changeColor(button.color,[0,0,0]);
       $(button.selector).css("background-color", buttonOriginalColor);
       $(button.selector).css(button.borderRadiusSelector, "30%");
 
       //set shadow and border
       var shadowColor = changeColor(button.color, [-100, -100, -100]);
       $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      $(button.selector).css("-moz-box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      $(button.selector).css("-webkit-box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
       $(button.selector).css("border", "1px solid " + shadowColor);     
     });
   };
 
-  var lightButton = function(button){
+  var setItemColor = function(element, button){
+    //set color and radius
+    var buttonOriginalColor = changeColor(button.color,[0,0,0]);
+    element.css("background-color", buttonOriginalColor);
+  };
+
+
+
+  var lightButton = function(selector, button, callback){
     var lightColor = changeColor(button.color,[50,50,50]);
-    var buttonOriginalColor = changeColor(button.color,[0,0,0])
+    var buttonOriginalColor = changeColor(button.color,[0,0,0]);
     var shadowColor = changeColor(button.color, [-50, -50, -50]);
 
     //set light
-    $(button.selector).css("background-color", lightColor);
-    $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE  + "px 0px " + lightColor);
+    $(selector).css("background-color", lightColor);
+    $(selector).css("box-shadow", "0px " + SHADOW_SIZE  + "px 0px " + lightColor);
 
     //remove light
     window.setTimeout(function(){
-      $(button.selector).css("background-color", buttonOriginalColor);
-      $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
-    },BUTTON_LIGHT_TIME)
+      $(selector).css("background-color", buttonOriginalColor);
+      $(selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      if(callback !== undefined) callback();
+    },BUTTON_LIGHT_TIME);
   };
 
   var pressButton = function(button){
-    var buttonOriginalColor = changeColor(button.color,[0,0,0])
+    var buttonOriginalColor = changeColor(button.color,[0,0,0]);
     var buttonOriginalPosition = $(button.selector).position();
     var lightColor = changeColor(button.color,[150,150,150]);
     var shadowColor = changeColor(button.color, [-150, -150, -150]);
@@ -90,7 +101,7 @@ var ButtonsHandler = function(){
       $(button.selector).css("background-color", buttonOriginalColor);
       $(button.selector).css("top", buttonOriginalPosition.top + "px");
       $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
-    },BUTTON_PRESS_TIME)
+    },BUTTON_PRESS_TIME);
   };
 
   var getRandomButton = function(){
@@ -98,10 +109,10 @@ var ButtonsHandler = function(){
     var min = 1;
     var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
 
-    if(randomNumber == 1) return buttons["green"];
-    if(randomNumber == 2) return buttons["yellow"];
-    if(randomNumber == 3) return buttons["red"];
-    return buttons["blue"];
+    if(randomNumber == 1) return buttons.green;
+    if(randomNumber == 2) return buttons.yellow;
+    if(randomNumber == 3) return buttons.red;
+    return buttons.blue;
 
   };
 
@@ -119,12 +130,56 @@ var ButtonsHandler = function(){
             sumColor(original[2], change[2]) + ")";
   };
 
+  var addButtonToBreadcrumb = function(button, index){
+    $("section.breadcrumb").append("<div id='breadcrumb-item-id-" + index + "'></div>");
+    var breadcrumbButton = $("#breadcrumb-item-id-" + index);
+
+    setItemColor(breadcrumbButton, button);
+
+    $(breadcrumbButton).addClass("btn");
+    $(breadcrumbButton).addClass("btn-default");
+  };
+
+  var wrongMove = function(loopIndex){
+    if(loopIndex === undefined) loopIndex = 0;
+    if(loopIndex == 4) return;
+
+    window.setTimeout(function(){
+      if(loopIndex % 2 === 0){
+        $("section.buttons-container").css("margin-left", "2px");
+      }else{
+        $("section.buttons-container").css("margin-left", "-2px");
+      }
+
+      window.setTimeout(function(){
+        $("section.buttons-container").css("margin-left", "0px");
+      }, 50);
+
+      wrongMove(loopIndex + 1);
+    }, 100);
+    
+  };
+
+   var blinkButton = function(button, times){
+    if(times === 0) return;
+
+    window.setTimeout(function(){
+      lightButton(".button.button-" + button.name, button);
+      blinkButton(button, times -1);
+
+
+    }, 500);
+  };
+
   return{
     buttons: buttons,
     renderButtons: renderButtons,
     pressButton: pressButton,
     lightButton: lightButton,
-    getRandomButton: getRandomButton
+    getRandomButton: getRandomButton,
+    addButtonToBreadcrumb: addButtonToBreadcrumb,
+    wrongMove: wrongMove,
+    blinkButton: blinkButton
   };
 
 };
