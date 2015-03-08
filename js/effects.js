@@ -11,7 +11,7 @@ var ButtonsHandler = function(){
       "selector":".button.button-green",
       "color": [0,150,0],
       "currentColor": [0,255,0],
-      "soundClick": new Audio('sound-green.wav')
+      "soundClick": new Audio('sound/sound-green.wav')
     },
     "yellow": {
       "name": "yellow",
@@ -19,7 +19,7 @@ var ButtonsHandler = function(){
       "selector":".button.button-yellow",
       "color": [200,200,0],
       "currentColor": [0,255,255],
-      "soundClick": new Audio('sound-yellow.wav')
+      "soundClick": new Audio('sound/sound-yellow.wav')
     },
     "red": {
       "name": "red",
@@ -27,7 +27,7 @@ var ButtonsHandler = function(){
       "selector":".button.button-red",
       "color": [255,0,0],
       "currentColor": [255,0,0],
-      "soundClick": new Audio('sound-red.wav')
+      "soundClick": new Audio('sound/sound-red.wav')
     },
     "blue": {
       "name": "blue",
@@ -35,16 +35,16 @@ var ButtonsHandler = function(){
       "selector":".button.button-blue",
       "color": [0,0,180],
       "currentColor": [0,0,255],
-      "soundClick": new Audio('sound-blue.wav')
+      "soundClick": new Audio('sound/sound-blue.wav')
     }
   };
 
   var renderButtons = function(){
-    var soundClick = new Audio('sound-click.wav');
+    var soundClick = new Audio('sound/sound-click.wav');
 
     _.each(buttons, function(button){
       //set color and radius
-      var buttonOriginalColor = changeColor(button.color,[0,0,0])
+      var buttonOriginalColor = changeColor(button.color,[0,0,0]);
       $(button.selector).css("background-color", buttonOriginalColor);
       $(button.selector).css(button.borderRadiusSelector, "30%");
 
@@ -57,7 +57,7 @@ var ButtonsHandler = function(){
 
   var lightButton = function(button){
     var lightColor = changeColor(button.color,[50,50,50]);
-    var buttonOriginalColor = changeColor(button.color,[0,0,0])
+    var buttonOriginalColor = changeColor(button.color,[0,0,0]);
     var shadowColor = changeColor(button.color, [-50, -50, -50]);
 
     //set light
@@ -68,11 +68,11 @@ var ButtonsHandler = function(){
     window.setTimeout(function(){
       $(button.selector).css("background-color", buttonOriginalColor);
       $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
-    },BUTTON_LIGHT_TIME)
+    },BUTTON_LIGHT_TIME);
   };
 
   var pressButton = function(button){
-    var buttonOriginalColor = changeColor(button.color,[0,0,0])
+    var buttonOriginalColor = changeColor(button.color,[0,0,0]);
     var buttonOriginalPosition = $(button.selector).position();
     var lightColor = changeColor(button.color,[150,150,150]);
     var shadowColor = changeColor(button.color, [-150, -150, -150]);
@@ -90,7 +90,7 @@ var ButtonsHandler = function(){
       $(button.selector).css("background-color", buttonOriginalColor);
       $(button.selector).css("top", buttonOriginalPosition.top + "px");
       $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
-    },BUTTON_PRESS_TIME)
+    },BUTTON_PRESS_TIME);
   };
 
   var getRandomButton = function(){
@@ -98,10 +98,10 @@ var ButtonsHandler = function(){
     var min = 1;
     var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
 
-    if(randomNumber == 1) return buttons["green"];
-    if(randomNumber == 2) return buttons["yellow"];
-    if(randomNumber == 3) return buttons["red"];
-    return buttons["blue"];
+    if(randomNumber == 1) return buttons.green;
+    if(randomNumber == 2) return buttons.yellow;
+    if(randomNumber == 3) return buttons.red;
+    return buttons.blue;
 
   };
 

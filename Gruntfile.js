@@ -9,7 +9,7 @@ module.exports = function(grunt) {
           dest: 'dist/main.js'
         },
         stylesheets: {
-          src: ['css/bootstrap.css', 'css/main.css'],
+          src: ['css/bootstrap.css', 'dist/main.css'],
           dest: 'dist/main.css'
         }
     },
@@ -20,12 +20,28 @@ module.exports = function(grunt) {
         }
       }
     },
-    uglify:{
+    less:{
+      "dist/main.css": ["css/*.less"]
+    },
+    jshint: {
+      src: ['js/*.js']
+    },
+    /*uglify:{
       my_target:{
         files: {
           'dist/uglifieds.js': ['js/*']
         }
       }
+    },*/
+    watch:{
+      script: {
+        files: ['js/*.js'],
+        tasks: ['jshint:src','concat:javascripts']
+      },
+      stylesheets: {
+        files: ['css/*.less'],
+        tasks: ['less', 'cssmin', 'concat:stylesheets']
+      },
     }
 
   });
@@ -33,7 +49,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  //grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['uglify','concat','cssmin']);
+  grunt.registerTask('default', ['watch']);
 };
