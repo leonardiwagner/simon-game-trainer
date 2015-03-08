@@ -51,23 +51,34 @@ var ButtonsHandler = function(){
       //set shadow and border
       var shadowColor = changeColor(button.color, [-100, -100, -100]);
       $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      $(button.selector).css("-moz-box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      $(button.selector).css("-webkit-box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
       $(button.selector).css("border", "1px solid " + shadowColor);     
     });
   };
 
-  var lightButton = function(button){
+  var setItemColor = function(element, button){
+    //set color and radius
+    var buttonOriginalColor = changeColor(button.color,[0,0,0]);
+    element.css("background-color", buttonOriginalColor);
+  };
+
+
+
+  var lightButton = function(selector, button, callback){
     var lightColor = changeColor(button.color,[50,50,50]);
     var buttonOriginalColor = changeColor(button.color,[0,0,0]);
     var shadowColor = changeColor(button.color, [-50, -50, -50]);
 
     //set light
-    $(button.selector).css("background-color", lightColor);
-    $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE  + "px 0px " + lightColor);
+    $(selector).css("background-color", lightColor);
+    $(selector).css("box-shadow", "0px " + SHADOW_SIZE  + "px 0px " + lightColor);
 
     //remove light
     window.setTimeout(function(){
-      $(button.selector).css("background-color", buttonOriginalColor);
-      $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      $(selector).css("background-color", buttonOriginalColor);
+      $(selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      if(callback != undefined) callback();
     },BUTTON_LIGHT_TIME);
   };
 
@@ -119,12 +130,44 @@ var ButtonsHandler = function(){
             sumColor(original[2], change[2]) + ")";
   };
 
+  var addButtonToBreadcrumb = function(button, index){
+    $("section.breadcrumb").append("<div id='breadcrumb-item-id-" + index + "'></div>");
+    var breadcrumbButton = $("#breadcrumb-item-id-" + index);
+
+    setItemColor(breadcrumbButton, button);
+
+    $(breadcrumbButton).addClass("btn");
+    $(breadcrumbButton).addClass("btn-default");
+  };
+
+  var wrongMove = function(loopIndex){
+    if(loopIndex == undefined) loopIndex = 0;
+    if(loopIndex == 4) return;
+
+    window.setTimeout(function(){
+      if(loopIndex % 2 == 0){
+        $("section.buttons-container").css("margin-left", "2px");
+      }else{
+        $("section.buttons-container").css("margin-left", "-2px");
+      }
+
+      window.setTimeout(function(){
+        $("section.buttons-container").css("margin-left", "0px");
+      }, 50)
+
+      wrongMove(loopIndex + 1);
+    }, 100)
+    
+  };
+
   return{
     buttons: buttons,
     renderButtons: renderButtons,
     pressButton: pressButton,
     lightButton: lightButton,
-    getRandomButton: getRandomButton
+    getRandomButton: getRandomButton,
+    addButtonToBreadcrumb: addButtonToBreadcrumb,
+    wrongMove: wrongMove
   };
 
 };

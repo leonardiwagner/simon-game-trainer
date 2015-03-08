@@ -4,9 +4,7 @@ module.exports = function(grunt) {
         javascripts: {
           src: ['bower_components/angular/angular.min.js', 
           'bower_components/jquery/dist/jquery.min.js', 
-          'bower_components/underscore/underscore-min.js',
-          'js/angularApp.js',
-          'js/effects.js',
+          'bower_components/underscore/underscore-min.js'
           ],
           dest: 'dist/main.js'
         },

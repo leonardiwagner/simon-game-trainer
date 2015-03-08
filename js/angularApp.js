@@ -19,30 +19,41 @@ angular.module('angularApp', [])
   $scope.buttons = buttonsHandler.buttons;
  
 
-  $scope.clickGenius = function(buttonName){
-    buttonsHandler.pressButton(buttonsHandler.buttons[buttonName]);
-  };
-
+  
   $scope.clickGenius = function(buttonName){
     var button = buttonsHandler.buttons[buttonName];
     $scope.userBreadcrumb.push(button);
+
+    buttonsHandler.pressButton(buttonsHandler.buttons[buttonName]);
+    button.soundClick.load();
+    button.soundClick.play();
 
     if($scope.breadcrumb[$scope.userBreadcrumb.length -1].name === button.name){
       if($scope.userBreadcrumb.length === $scope.breadcrumb.length){
         //congrats
         $scope.nextGenius();
       }else{
+        buttonsHandler.lightButton("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length -1),  button, function(){
+          $("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length - 1)).css("background-color", "gray");  
+        });
+
+        
+
         //helps if user takes too long to make next move
         nextMoveCancelationToken = window.setInterval(function(){
           if($scope.userBreadcrumb.length > 0){
             var nextColor = $scope.breadcrumb[$scope.userBreadcrumb.length];
-            blinkButton(nextColor, 2);
+            //blinkButton(nextColor, 2);
          
             
           }
         }, 3000);
       }
     }else{
+      var x = new Audio('sound/sound-red.wav');
+      x.load();
+      x.play();
+      buttonsHandler.wrongMove();
       console.log('you fool');
       $scope.userBreadcrumb = [];
     }
@@ -52,6 +63,7 @@ angular.module('angularApp', [])
   $scope.nextGenius = function(){
     var nextGeniusButton = buttonsHandler.getRandomButton();
     $scope.breadcrumb.push(nextGeniusButton);
+    buttonsHandler.addButtonToBreadcrumb(nextGeniusButton, $scope.breadcrumb.length - 1);
     $scope.runGenius(0);
   };
 
@@ -59,10 +71,14 @@ angular.module('angularApp', [])
     $scope.breadcrumb =[];
     $scope.userBreadcrumb =[];
     $scope.nextGenius();
+
+
   };
 
   $scope.runGenius = function(i){
     var INTERVAL_TIME = 400;
+
+
 
     window.setTimeout(function(){
       if(i <= $scope.breadcrumb.length - 1){
@@ -70,7 +86,8 @@ angular.module('angularApp', [])
          var button = $scope.breadcrumb[i];
          button.soundClick.load();
          button.soundClick.play();
-         buttonsHandler.lightButton(button);
+         buttonsHandler.lightButton(button.selector, button);
+         buttonsHandler.lightButton("#breadcrumb-item-id-" +i,  button);
       }
      
       

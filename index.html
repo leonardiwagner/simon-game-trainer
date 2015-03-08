@@ -20,20 +20,18 @@
         <div id="score">{{breadcrumb.length}}</div>
       </section>
 
-      <div>
-        <div class="btn btn-primary" ng-click="runGenius(0)">repeat</div>
-        <div class="btn btn-default" ng-click="runGenius(-1)">repeat missing</div>
-      </div>
+      <section class="repeat-buttons">
+        <div class="btn btn-primary btn-repeat" ng-click="runGenius(0)">repeat</div>
+        <div class="btn btn-default btn-repeat-missing" ng-click="runGenius(-1)">repeat missing</div>
+      </section>
 
-
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div ng-repeat="item in breadcrumb track by $index" class="btn btn-default button-{{item.name}}"></div>
-        </div>
-      </div>
+      <section class="breadcrumb">
+        <!--<div ng-repeat="item in breadcrumb track by $index" class="btn btn-default button-{{item.name}}"></div>-->
+      </section>
     </article>
    
    <script src="dist/main.js"></script>
-
+   <script src="js/angularApp.js"></script>
+   <script src="js/effects.js"></script>
   </body>
 </html>
