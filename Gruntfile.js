@@ -5,7 +5,9 @@ module.exports = function(grunt) {
           src: ['bower_components/angular/angular.min.js', 
           'bower_components/jquery/dist/jquery.min.js', 
           'bower_components/underscore/underscore-min.js',
-          'dist/uglifieds.js'],
+          'js/angularApp.js',
+          'js/effects.js',
+          ],
           dest: 'dist/main.js'
         },
         stylesheets: {
@@ -27,16 +29,14 @@ module.exports = function(grunt) {
       src: ['js/*.js']
     },
     /*uglify:{
-      my_target:{
-        files: {
-          'dist/uglifieds.js': ['js/*']
-        }
+      files: {
+        'dist/uglifieds.js': ['js/effects.js']
       }
     },*/
     watch:{
       script: {
         files: ['js/*.js'],
-        tasks: ['jshint:src','concat:javascripts']
+        tasks: ['jshint:src', 'concat:javascripts']
       },
       stylesheets: {
         files: ['css/*.less'],
