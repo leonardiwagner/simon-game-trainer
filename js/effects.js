@@ -78,7 +78,7 @@ var ButtonsHandler = function(){
     window.setTimeout(function(){
       $(selector).css("background-color", buttonOriginalColor);
       $(selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
-      if(callback != undefined) callback();
+      if(callback !== undefined) callback();
     },BUTTON_LIGHT_TIME);
   };
 
@@ -141,11 +141,11 @@ var ButtonsHandler = function(){
   };
 
   var wrongMove = function(loopIndex){
-    if(loopIndex == undefined) loopIndex = 0;
+    if(loopIndex === undefined) loopIndex = 0;
     if(loopIndex == 4) return;
 
     window.setTimeout(function(){
-      if(loopIndex % 2 == 0){
+      if(loopIndex % 2 === 0){
         $("section.buttons-container").css("margin-left", "2px");
       }else{
         $("section.buttons-container").css("margin-left", "-2px");
@@ -153,11 +153,22 @@ var ButtonsHandler = function(){
 
       window.setTimeout(function(){
         $("section.buttons-container").css("margin-left", "0px");
-      }, 50)
+      }, 50);
 
       wrongMove(loopIndex + 1);
-    }, 100)
+    }, 100);
     
+  };
+
+   var blinkButton = function(button, times){
+    if(times === 0) return;
+
+    window.setTimeout(function(){
+      lightButton(".button.button-" + button.name, button);
+      blinkButton(button, times -1);
+
+
+    }, 500);
   };
 
   return{
@@ -167,7 +178,8 @@ var ButtonsHandler = function(){
     lightButton: lightButton,
     getRandomButton: getRandomButton,
     addButtonToBreadcrumb: addButtonToBreadcrumb,
-    wrongMove: wrongMove
+    wrongMove: wrongMove,
+    blinkButton: blinkButton
   };
 
 };

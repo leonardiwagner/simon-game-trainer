@@ -19,8 +19,12 @@ angular.module('angularApp', [])
   $scope.buttons = buttonsHandler.buttons;
  
 
-  
+  var nextMoveCancelationToken = null;
   $scope.clickGenius = function(buttonName){
+    if(nextMoveCancelationToken !== null){
+      clearInterval(nextMoveCancelationToken);
+    }
+
     var button = buttonsHandler.buttons[buttonName];
     $scope.userBreadcrumb.push(button);
 
@@ -47,7 +51,7 @@ angular.module('angularApp', [])
         nextMoveCancelationToken = window.setInterval(function(){
           if($scope.userBreadcrumb.length > 0){
             var nextColor = $scope.breadcrumb[$scope.userBreadcrumb.length];
-            //blinkButton(nextColor, 2);
+            buttonsHandler.blinkButton(nextColor, 2);
          
             
           }
