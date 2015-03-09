@@ -1,6 +1,37 @@
+@keyframes animatedBackground {
+      from { background-position: 0 0; }
+      to { background-position: 100% 0; }
+    }
+    @-webkit-keyframes animatedBackground {
+      from { background-position: 0 0; }
+      to { background-position: 100% 0; }
+    }
+    @-ms-keyframes animatedBackground {
+      from { background-position: 0 0; }
+      to { background-position: 100% 0; }
+    }
+    @-moz-keyframes animatedBackground {
+      from { background-position: 0 0; }
+      to { background-position: 100% 0; }
+    }
+
+#animated-background {
+  /*width: 560px;*/
+  height: 100%;
+  background-image: url('../img/backgroun-gym-colourful.png');
+  background-position: 0px 0px;
+  background-repeat: repeat-x;
+  animation: animatedBackground 40s linear infinite;
+  -ms-animation: animatedBackground 40s linear infinite;
+  -moz-animation: animatedBackground 40s linear infinite;
+  -webkit-animation: animatedBackground 40s linear infinite;
+}
+
 body{
   font-size: 3em;
-  background-image: url('/img/backgroun-gym.png');
+  
+
+
 }
 
 article{
@@ -36,7 +67,7 @@ section.buttons-container{
     z-index: 0;
   }
 
-  .button.button-red{
+  .button.button-red{   
     bottom:0;
     left:0;
     z-index: 1;
