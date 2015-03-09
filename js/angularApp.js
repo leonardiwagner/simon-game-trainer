@@ -32,21 +32,21 @@ angular.module('angularApp', [])
 
     if($scope.breadcrumb[$scope.userBreadcrumb.length -1].name === button.name){
       buttonsHandler.pressButton(buttonsHandler.buttons[buttonName]);
-    button.soundClick.load();
-    button.soundClick.play();
+      button.soundClick.load();
+      button.soundClick.play();
 
 
       if($scope.userBreadcrumb.length === $scope.breadcrumb.length){
         //congrats
+        //clean breadcrumb
+        $scope.userBreadcrumb = [];
+        $("section.breadcrumb div").removeClass("gray");
+
         $scope.nextGenius();
       }else{
-
-        buttonsHandler.lightButton("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length -1),  button, function(){
-          $("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length - 1)).css("background-color", "gray");  
+        buttonsHandler.lightButton("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length -1),  button, false, function(){
+          $("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length - 1)).addClass("gray");  
         });
-
-        
-
         //helps if user takes too long to make next move
         nextMoveCancelationToken = window.setInterval(function(){
           if($scope.userBreadcrumb.length > 0){
@@ -62,6 +62,9 @@ angular.module('angularApp', [])
       x.load();
       x.play();
       buttonsHandler.wrongMove();
+      
+      //clean breadcrumb
+      $("section.breadcrumb div").removeClass("gray");
 
       console.log('you fool');
       $scope.userBreadcrumb = [];
@@ -80,7 +83,7 @@ angular.module('angularApp', [])
     $scope.breadcrumb =[];
     $scope.userBreadcrumb =[];
     $scope.nextGenius();
-
+    $scope.userBreadcrumb = [];
 
   };
 
@@ -96,7 +99,7 @@ angular.module('angularApp', [])
          button.soundClick.load();
          button.soundClick.play();
          buttonsHandler.lightButton(button.selector, button);
-         buttonsHandler.lightButton("#breadcrumb-item-id-" +i,  button);
+         buttonsHandler.lightButton("#breadcrumb-item-id-" +i,  button, false);
       }
      
       

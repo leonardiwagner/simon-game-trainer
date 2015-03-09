@@ -43,41 +43,50 @@ var ButtonsHandler = function(){
     var soundClick = new Audio('sound/sound-click.wav');
 
     _.each(buttons, function(button){
-      //set color and radius
-      var buttonOriginalColor = changeColor(button.color,[0,0,0]);
-      $(button.selector).css("background-color", buttonOriginalColor);
-      $(button.selector).css(button.borderRadiusSelector, "30%");
-
-      //set shadow and border
-      var shadowColor = changeColor(button.color, [-100, -100, -100]);
-      $(button.selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
-      $(button.selector).css("-moz-box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
-      $(button.selector).css("-webkit-box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
-      $(button.selector).css("border", "1px solid " + shadowColor);     
+      setItemColor($(button.selector), button, true);
     });
   };
 
-  var setItemColor = function(element, button){
+  var setItemColor = function(element, button, changeBorder){
     //set color and radius
     var buttonOriginalColor = changeColor(button.color,[0,0,0]);
     element.css("background-color", buttonOriginalColor);
+    if(changeBorder){
+      //set shadow and border
+      element.css(button.borderRadiusSelector, "30%");
+      var shadowColor = changeColor(button.color, [-100, -100, -100]);
+      element.css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      element.css("-moz-box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      element.css("-webkit-box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      element.css("border", "1px solid " + shadowColor);
+    }
+
+
   };
 
 
 
-  var lightButton = function(selector, button, callback){
+  var lightButton = function(selector, button, changeBorder, callback){
+    if(changeBorder === undefined) changeBorder = true;
     var lightColor = changeColor(button.color,[50,50,50]);
     var buttonOriginalColor = changeColor(button.color,[0,0,0]);
     var shadowColor = changeColor(button.color, [-50, -50, -50]);
 
     //set light
     $(selector).css("background-color", lightColor);
-    $(selector).css("box-shadow", "0px " + SHADOW_SIZE  + "px 0px " + lightColor);
+
+    if(changeBorder){
+      $(selector).css("box-shadow", "0px " + SHADOW_SIZE  + "px 0px " + lightColor);
+    }
 
     //remove light
     window.setTimeout(function(){
       $(selector).css("background-color", buttonOriginalColor);
-      $(selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+
+      if(changeBorder){
+        $(selector).css("box-shadow", "0px " + SHADOW_SIZE + "px 0px " + shadowColor);
+      }
+
       if(callback !== undefined) callback();
     },BUTTON_LIGHT_TIME);
   };
@@ -134,7 +143,7 @@ var ButtonsHandler = function(){
     $("section.breadcrumb").append("<div id='breadcrumb-item-id-" + index + "'></div>");
     var breadcrumbButton = $("#breadcrumb-item-id-" + index);
 
-    setItemColor(breadcrumbButton, button);
+    setItemColor(breadcrumbButton, button, false);
 
     $(breadcrumbButton).addClass("btn");
     $(breadcrumbButton).addClass("btn-default");
