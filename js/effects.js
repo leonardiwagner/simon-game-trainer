@@ -125,6 +125,18 @@ var ButtonsHandler = function(){
 
   };
 
+  var playRandomWinSound = function(score){
+    if(score % 2 === 0 && score > 0 ){
+      var max = 4;
+      var min = 1;
+      var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+
+      var x = new Audio("sound/win-sounds/" + randomNumber + ".wav");
+      x.load();
+      x.play();
+    }
+  };
+
   var changeColor = function(original, change){
     function sumColor(o, c){
       var result = o + c;
@@ -188,7 +200,8 @@ var ButtonsHandler = function(){
     getRandomButton: getRandomButton,
     addButtonToBreadcrumb: addButtonToBreadcrumb,
     wrongMove: wrongMove,
-    blinkButton: blinkButton
+    blinkButton: blinkButton,
+    playRandomWinSound: playRandomWinSound
   };
 
 };

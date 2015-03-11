@@ -12,6 +12,8 @@ angular.module('angularApp', [])
 .controller('MainController', function ($scope, $http) {
   var buttonsHandler = new ButtonsHandler();
 
+
+
   $scope.renderButtons = function(){
     buttonsHandler.renderButtons();
   };
@@ -39,10 +41,30 @@ angular.module('angularApp', [])
       if($scope.userBreadcrumb.length === $scope.breadcrumb.length){
         //congrats
         //clean breadcrumb
-        $scope.userBreadcrumb = [];
-        $("section.breadcrumb div").removeClass("gray");
 
-        $scope.nextGenius();
+        buttonsHandler.playRandomWinSound($scope.userBreadcrumb.length -1);
+
+        buttonsHandler.lightButton($scope.buttons.green.selector, $scope.buttons.green);
+        buttonsHandler.lightButton($scope.buttons.red.selector, $scope.buttons.red);
+        buttonsHandler.lightButton($scope.buttons.blue.selector, $scope.buttons.blue);
+        buttonsHandler.lightButton($scope.buttons.yellow.selector, $scope.buttons.yellow);
+        window.setTimeout(function(){
+          buttonsHandler.lightButton($scope.buttons.green.selector, $scope.buttons.green);
+          buttonsHandler.lightButton($scope.buttons.red.selector, $scope.buttons.red);
+          buttonsHandler.lightButton($scope.buttons.blue.selector, $scope.buttons.blue);
+          buttonsHandler.lightButton($scope.buttons.yellow.selector, $scope.buttons.yellow);
+
+          $scope.userBreadcrumb = [];
+          $("section.breadcrumb div").removeClass("gray");
+          window.setTimeout(function(){
+            $scope.nextGenius();
+          },1000);
+
+        },700);
+        
+
+        
+        
       }else{
         buttonsHandler.lightButton("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length -1),  button, false, function(){
           $("#breadcrumb-item-id-" + ($scope.userBreadcrumb.length - 1)).addClass("gray");  
@@ -55,7 +77,7 @@ angular.module('angularApp', [])
          
             
           }
-        }, 3000);
+        }, 1500);
       }
     }else{
       var x = new Audio('sound/sound-error.wav');
@@ -80,12 +102,16 @@ angular.module('angularApp', [])
   };
 
   $scope.reset = function(){
+    $("section.breadcrumb").html("");
     $scope.breadcrumb =[];
     $scope.userBreadcrumb =[];
     $scope.nextGenius();
     $scope.userBreadcrumb = [];
 
+
   };
+
+  window.setTimeout(function(){$scope.reset();}, 500);
 
   $scope.runGenius = function(i){
     var INTERVAL_TIME = 400;
