@@ -1,0 +1,135 @@
+@keyframes animatedBackground {
+      from { background-position: 0 0; }
+      to { background-position: 100% 0; }
+    }
+    @-webkit-keyframes animatedBackground {
+      from { background-position: 0 0; }
+      to { background-position: 100% 0; }
+    }
+    @-ms-keyframes animatedBackground {
+      from { background-position: 0 0; }
+      to { background-position: 100% 0; }
+    }
+    @-moz-keyframes animatedBackground {
+      from { background-position: 0 0; }
+      to { background-position: 100% 0; }
+    }
+
+#animated-background {
+  /*width: 560px;*/
+  height: 100%;
+  background-image: url('../img/backgroun-gym-colourful.png');
+  background-position: 0px 0px;
+  background-repeat: repeat-x;
+  animation: animatedBackground 40s linear infinite;
+  -ms-animation: animatedBackground 40s linear infinite;
+  -moz-animation: animatedBackground 40s linear infinite;
+  -webkit-animation: animatedBackground 40s linear infinite;
+}
+
+body{
+  font-size: 3em;
+  
+
+
+}
+
+article{
+  width:90%;
+  float:left;
+  margin:0 5%;
+}
+
+section{
+  width: 100%;
+  float:left;
+}
+
+section.buttons-container{
+  position: relative;
+  height: 203px;
+
+  .button{
+    width:50%;
+    height: 100px;
+    position: absolute;
+  }
+
+  .button.button-green{
+    top:0;
+    left:0;
+    z-index: 0;
+  }
+
+  .button.button-yellow{
+    top:0;
+    right:0;
+    z-index: 0;
+  }
+
+  .button.button-red{   
+    bottom:0;
+    left:0;
+    z-index: 1;
+  }
+
+  .button.button-blue{;
+    bottom:0;
+    right:0;
+    z-index: 1;
+  }
+}
+
+section.repeat-buttons{
+  margin-top: 20px;
+
+  .btn-repeat{
+    /*width: 30%;*/
+    float: left;
+  }
+  .btn-repeat-missing{
+    width: 65%;
+    margin-left: 5%;
+    float: left;
+
+  }
+}
+
+section.breadcrumb{
+  margin-top: 20px;
+
+  .btn{
+    float:left;
+    margin:0 1%;
+    border-width: thin;
+  }
+
+  .gray{
+    background-color: gray !important;
+  }
+}
+
+
+
+
+.button-mini{
+  width:8%;
+  margin:2%;
+  height:50px;
+  float:left;
+}
+
+
+#score{
+ background-color: black;
+width: 35%;
+height: 56px;
+color: white;
+position: absolute;
+top: 38%;
+left: 32%;
+border-radius: 30%;
+text-align: center;
+box-shadow: 0px -5px 0px rgb(50,50,50);
+z-index: 2;
+}

@@ -1,0 +1,104 @@
+<html ng-app="angularApp">
+  <head>
+    
+    <meta name="viewport" content="width=320, user-scalable=1" />
+    <link rel="stylesheet" type="text/css" href="dist/main.css" />
+    
+  </head>
+  <body ng-controller="MainController">
+   
+
+    <div id="animated-background">
+      <article>
+        <div class="btn btn-primary btn-block btn-lg"><- Save and Back</div>
+
+        <div class="well" style="float:left;padding:1%;border-size:0;overflow-y:scroll;height:400px;">
+         <div class="panel panel-primary" style="width:45%;float:left;margin-right:10%;">
+            <div class="panel-heading">
+              <h3 class="panel-title">Buttons</h3>
+            </div>
+            <div class="panel-body">
+              <div class="btn-group" role="group" aria-label="asdsdads">
+                <button type="button" class="btn btn-default">2</button>
+                <button type="button" class="btn btn-default">3</button>
+                <button type="button" class="btn btn-primary">4</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-primary" style="width:45%;float:left;">
+            <div class="panel-heading">
+              <h3 class="panel-title">Colors</h3>
+            </div>
+            <div class="panel-body">
+              <div class="btn-group" role="group" aria-label="asdsdads">
+                <button type="button" class="btn btn-primary">Yes</button>
+                <button type="button" class="btn btn-default">No</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-primary" style="width:45%;float:left;margin-right:10%;">
+            <div class="panel-heading">
+              <h3 class="panel-title">Breadcrumb</h3>
+            </div>
+            <div class="panel-body">
+              <div class="btn-group" role="group" aria-label="asdsdads">
+                <button type="button" class="btn btn-primary">ON</button>
+                <button type="button" class="btn btn-default">OFF</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-primary"  style="width:45%;float:left;">
+            <div class="panel-heading">
+              <h3 class="panel-title">Hint</h3>
+            </div>
+            <div class="panel-body">
+              <div class="btn-group" role="group" aria-label="asdsdads">
+                <button type="button" class="btn btn-primary">ON</button>
+                <button type="button" class="btn btn-default">OFF</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel panel-primary" style="width:100%; float:left;">
+            <div class="panel-heading">
+              <h3 class="panel-title">Sound</h3>
+            </div>
+            <div class="panel-body">
+              <div class="btn-group" role="group" aria-label="asdsdads">
+                <button type="button" class="btn btn-primary">classic</button>
+                <button type="button" class="btn btn-default">piano</button>
+                <button type="button" class="btn btn-default">same</button>
+                <button type="button" class="btn btn-default">off</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="panel panel-primary" style="width:100%; float:left;">
+            <div class="panel-heading">
+              <h3 class="panel-title">Speed</h3>
+            </div>
+            <div class="panel-body">
+              <div class="btn-group" role="group" aria-label="asdsdads">
+                <button type="button" class="btn btn-default">slow</button>
+                <button type="button" class="btn btn-primary">normal</button>
+                <button type="button" class="btn btn-default">fast</button>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      </article>
+    </div>
+   
+   <script src="dist/main.js"></script>
+   <script>
+   var x = new Audio('sound/menu-song.wav');
+      x.load();
+      x.play();
+   </script>
+ 
+  </body>
+</html>
